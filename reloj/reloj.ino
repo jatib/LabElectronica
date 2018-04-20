@@ -10,7 +10,8 @@ int sensorValue = 0,tiempo = 0;
 float volt,temp,maxi=0,mini=0;
 float valorApagado = 40;
 float valorEncendido = 30;
-int minutos=0,horas=0,segundos=0; 
+String value="",hora="",minuto="",segundo="";
+int minutos=0,horas=0,segundos=0,incomingByte=0; 
 
 void setup() {
   pinMode(LedPin, OUTPUT);
@@ -20,35 +21,64 @@ void setup() {
 }
 
 void loop() {
-  
+
   time_t t = now();
-  
+
   lcd.setCursor(0,0);
   lcd.print("HORA ACTUAL");
-  
+
+  // send data only when you receive data:
+  if (Serial.available() > 0) {
+    incomingByte = Serial.read();
+    Serial.print("Set hours: ");
+    value = value + char(incomingByte);
+    if(value.length() >= 2 ){
+      hora = value;
+      value = "";
+      Serial.println(hora);
+      incomingByte = Serial.read();
+      Serial.print("Set minutes: ");
+      value = value + char(incomingByte);
+      if(value.length() >= 2 ){
+        minuto = value;
+        value = "";
+        Serial.println(minuto);
+        incomingByte = Serial.read();
+        Serial.print("Set seconds: ");
+        value = value + char(incomingByte);
+      }
+    }
+  }
+
   lcd.setCursor(0,1);
 
   if(hour(t)<10){
     lcd.print("0");
     lcd.print(hour(t));
-  }else{
+
+  }
+  else{
     lcd.print(hour(t));
   }
-  
+
   if(minute(t)<10){
     lcd.print(":0");
     lcd.print(minute(t));
-  }else{
+  }
+  else{
     lcd.print(":");
     lcd.print(minute(t));
   }
   if(second(t)<10){
-  lcd.print(":0");
-  lcd.print(second(t));
-  }else{
+    lcd.print(":0");
+    lcd.print(second(t));
+  }
+  else{
     lcd.print(":");
-  lcd.print(second(t));
-    }
+    lcd.print(second(t));
+  }
   delay(1000);  
 }
+
+
 
