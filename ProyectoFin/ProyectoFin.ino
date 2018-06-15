@@ -6,10 +6,13 @@
 
 int vel1  =   10 ;// Velocidad de rotacion motor 1
 int vel2 = 10;//Velocidad de rotacion motor 2
-int sent =   1  ;  // Direccin de la rotacin (0 o 1)
+int sent =   1  ;  // Direccin de la rotacin (0 o 1) (por ahora 
+                   // iniciamos en 1, el carro debe estar de lado del 
+                   // motor principal(el grande))
 int n = 0;
 int m = 0;
 
+//Configuracion de entradas y salidas
 void setup(){
   
   pinMode( Step  , OUTPUT );
@@ -23,10 +26,12 @@ void loop()
 {
   
   for(int i=1; i<16; i++){
+    // **************************************************************************
     // Elegir la direccion de movimiento del carrito, 
     // para todos los indices de renglon par se mueve en una direccin
     // y para los impar en la otra, garantizando que al final de cada movimiento
     // el carro regrese.
+    // **************************************************************************
     if( i%2 == 0 )
       sent = 1;
     else
@@ -61,7 +66,9 @@ void loop()
     }                  //Wait 1 Second
     delay(10000);
 }//
-
+// **********************************************
+// Funcion para mover el motor grande noten 
+// que es sensible a la conexion de los motores
 int moverMotorUno(int sens){
     
     digitalWrite( Dir   , sens);
