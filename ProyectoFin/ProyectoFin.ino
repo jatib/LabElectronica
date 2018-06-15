@@ -6,12 +6,13 @@
 
 int vel1  =   10 ;// Velocidad de rotacion motor 1
 int vel2 = 10;//Velocidad de rotacion motor 2
-int sent =   1  ;  // Direccin de la rotacin (0 o 1) (por ahora 
+int sentido =   1  ;  // Direccin de la rotacin (0 o 1) (por ahora 
                    // iniciamos en 1, el carro debe estar de lado del 
                    // motor principal(el grande))
 int n = 0;
 int m = 0;
-
+int limiteMovCarro = 25;
+int limiteSolenoide = 1;
 //Configuracion de entradas y salidas
 void setup(){
   
@@ -32,12 +33,34 @@ void loop()
     // y para los impar en la otra, garantizando que al final de cada movimiento
     // el carro regrese.
     // **************************************************************************
-    sent = direccionDeGiro(i);
+    if( (i%2) == 0 ){
+      sentido = 1;
+    }else{
+      sentido = 0;
+    }
+    
       // 
       for(int j=1; j<16;j++){
         //moverCarro(int sens, int limiteMovCarro, int limiteSolenoide, int espera=100)
-        moverCarro(sent,25,10);
-      }
+        //moverCarro(sent,25,10);
+        
+        int s=0;
+        int r=0;
+  
+        while(s < limiteMovCarro){
+          moverMotorDos(sentido);
+          s++;
+        }
+        //
+        delay(1000);
+  
+        while(r<limiteSolenoide){
+          solenoid();
+          r++;
+        }
+      //
+     }
+        
       while(n<250){
         moverMotorUno(1);
         n++;
@@ -79,20 +102,21 @@ int solenoid(){
     delay(100);                          //Wait 1 Second
     digitalWrite(solenoidPin, LOW);       //Switch Solenoid OFF
     delay(100);
+    
+    //return 1;
 }
 
-int direccionDeGiro(int i,int sent=1){
-  
-  if( (i%2) == 0 ){
-      sent = 1;
+/*int giro(int a,int sentido=1){ 
+  if( (a%2) == 0 ){
+      sentido = 1;
     }else{
-      sent = 0;
+      sentido = 0;
     }
       
-  return sent;
+  return sentido;
 }
-
-int moverCarro(int sens, int limiteMovCarro, int limiteSolenoide, int espera=100){
+/*
+int moverCarro(int sentido, int limiteMovCarro, int limiteSolenoide, int espera=100){
   
   int s=0;
   int r=0;
@@ -110,3 +134,11 @@ int moverCarro(int sens, int limiteMovCarro, int limiteSolenoide, int espera=100
   }
   //
 }
+
+int moverBrazo(int tiempo){
+  int r=0;
+  while(r<tiempo){
+    moverMotorUno(1);
+    r++;
+  }
+}*/
