@@ -41,7 +41,7 @@ r		delayMicroseconds(stepDelay);
 #define Step2  9
 #define Dir2  8
 int vit  =   1 ;   // Speed of the rotation (smaller means faster rotation)
-int sens =   0  ;  // Rotation direction (0 or 1)
+int sens =   1 ;  // Rotation direction (0 or 1)
 int solenoidPin = 12;                    //This is the output pin on the Arduino
 
 
@@ -54,7 +54,8 @@ void setup(){
 }
 void loop()
 {
-    digitalWrite(solenoidPin, HIGH);      //Switch Solenoid ON
+    moveMotorOne();
+    /* /digitalWrite(solenoidPin, HIGH);      //Switch Solenoid ON
     delay(1000);                          //Wait 1 Second
     digitalWrite(solenoidPin, LOW);       //Switch Solenoid OFF
     delay(1000);                          //Wait 1 Second
@@ -65,8 +66,13 @@ void loop()
     digitalWrite( Step, HIGH );
     delay(vit);
     digitalWrite( Step, LOW );
-    delay(vit);
+    delay(vit);*/
     //Secondary Motor
+    
+}//
+
+int moveMotorOne(){
+    
     digitalWrite( Dir2   , sens);
     digitalWrite( Step2  , LOW);
     // Fabrication d'un "Pas"
@@ -74,4 +80,5 @@ void loop()
     delay(vit);
     digitalWrite( Step2, LOW );
     delay(vit);
-}//
+    
+}
