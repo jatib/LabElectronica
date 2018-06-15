@@ -32,32 +32,12 @@ void loop()
     // y para los impar en la otra, garantizando que al final de cada movimiento
     // el carro regrese.
     // **************************************************************************
-    if( i%2 == 0 )
-      sent = 1;
-    else
-      sent = 0;
-      //
+    sent = direccionDeGiro(i);
+      // 
       for(int j=1; j<16;j++){
-        //
-        while(n<1){
-          while(m < 15){
-            moverMotorDos(sent);
-            m++;
-          }
-          //
-          m = 0;
-          delay(100);
-          //
-          while(m<1){
-            solenoid();
-            m++;
-          }
-          //
-          m=0;
-          n++;
-        }
-        n=0;
-       }
+        //moverCarro(int sens, int limiteMovCarro, int limiteSolenoide, int espera=100)
+        moverCarro(sent,25,10);
+      }
       while(n<250){
         moverMotorUno(1);
         n++;
@@ -69,6 +49,7 @@ void loop()
 // **********************************************
 // Funcion para mover el motor grande noten 
 // que es sensible a la conexion de los motores
+
 int moverMotorUno(int sens){
     
     digitalWrite( Dir   , sens);
@@ -93,11 +74,39 @@ int moverMotorDos(int sens){
     
 }
 
-
-
 int solenoid(){
     digitalWrite(solenoidPin, HIGH);      //Switch Solenoid ON
     delay(100);                          //Wait 1 Second
     digitalWrite(solenoidPin, LOW);       //Switch Solenoid OFF
     delay(100);
+}
+
+int direccionDeGiro(int i,int sent=1){
+  
+  if( (i%2) == 0 ){
+      sent = 1;
+    }else{
+      sent = 0;
+    }
+      
+  return sent;
+}
+
+int moverCarro(int sens, int limiteMovCarro, int limiteSolenoide, int espera=100){
+  
+  int s=0;
+  int r=0;
+  
+  while(s < limiteMovCarro){
+    moverMotorDos(sens);
+    s++;
+  }
+  //
+  delay(espera);
+  
+  while(r<limiteSolenoide){
+    solenoid();
+    r++;
+  }
+  //
 }
